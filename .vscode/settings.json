@@ -1,0 +1,5 @@
+{
+  "javascript.format.semicolons": "insert",
+  "prettier.tabWidth": 4,
+  "prettier.singleQuote": true
+}
