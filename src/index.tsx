@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Amplify } from 'aws-amplify';
-import './index.css';
-import App from './App';
+import './styles/index.css';
+import App from './components/App';
 import awsConfig from './awsConfig';
 
 Amplify.configure({

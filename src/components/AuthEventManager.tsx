@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { useAppContext } from './AppContext';
+import { useAppContext } from '../AppContext';
 import { Auth } from 'aws-amplify';
 
-const EventManager = () => {
+const AuthEventManager = () => {
     const { setIsAuthenticated } = useAppContext();
 
     const handleLogout = async () => {
@@ -12,7 +12,7 @@ const EventManager = () => {
             setIsAuthenticated(false);
             console.log('Sign out successful');
         } catch(error) {
-            console.error('error signing out: ', error);
+            console.error('Error signing out: ', error);
         }
     };
 
@@ -24,4 +24,4 @@ const EventManager = () => {
     );
 };
 
-export default EventManager;
+export default AuthEventManager;
