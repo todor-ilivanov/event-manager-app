@@ -13,20 +13,20 @@ Amplify.configure({
         identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID,
         userPoolWebClientId: awsConfig.cognito.APP_CLIENT_ID,
     },
-    // Storage: {
-    //   region: config.s3.REGION,
-    //   bucket: config.s3.BUCKET,
-    //   identityPoolId: config.cognito.IDENTITY_POOL_ID
-    // },
-    // API: {
-    //   endpoints: [
-    //     {
-    //       name: "event-manager-app",
-    //       endpoint: config.apiGateway.URL,
-    //       region: config.apiGateway.REGION
-    //     },
-    //   ]
-    // }
+    Storage: {
+        region: awsConfig.s3.REGION,
+        bucket: awsConfig.s3.BUCKET,
+        identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID
+    },
+    API: {
+        endpoints: [
+            {
+                name: "event-manager-api",
+                endpoint: awsConfig.apiGateway.URL,
+                region: awsConfig.apiGateway.REGION
+            },
+        ]
+    }
 });
 
 ReactDOM.render(

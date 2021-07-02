@@ -1,11 +1,11 @@
 const awsConfig = {
     s3: {
-        REGION: 'YOUR_S3_UPLOADS_BUCKET_REGION',
-        BUCKET: 'YOUR_S3_UPLOADS_BUCKET_NAME',
+        REGION: 'eu-west-2',
+        BUCKET: 'event-manager-images',
     },
     apiGateway: {
-        REGION: 'YOUR_API_GATEWAY_REGION',
-        URL: 'YOUR_API_GATEWAY_URL',
+        REGION: 'eu-west-2',
+        URL: 'https://o1w3347f92.execute-api.eu-west-2.amazonaws.com/',
     },
     cognito: {
         REGION: 'eu-west-2',
