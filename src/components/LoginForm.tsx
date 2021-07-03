@@ -46,8 +46,9 @@ const LoginForm = (props: LoginFormProps) => {
                 message: error.message,
                 shouldRender: true,
             } as LoginError);
-            setLoginLoading(false);
             console.error(error);
+        } finally {
+            setLoginLoading(false);
         }
     };
 

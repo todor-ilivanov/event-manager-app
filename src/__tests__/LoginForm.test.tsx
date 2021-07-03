@@ -6,45 +6,48 @@ import { Auth } from 'aws-amplify';
 import LoginForm from '../components/LoginForm';
 import { AppContext } from '../AppContext';
 
-beforeEach(() => {
-    render(
-        <AppContext.Provider value={{ isAuthenticated: false, setIsAuthenticated: () => { } }}>
-            <LoginForm loginDialogOpen={true} handleDialogClose={() => { }} />
-        </AppContext.Provider>
-    );
-});
+describe('LoginForm', () => {
 
-it('sends a successful login request', async () => {
-    const emailInput: HTMLElement = screen.getByTestId('login-email-input');
-    const passwordInput: HTMLElement = screen.getByTestId('login-password-input');
+    beforeEach(() => {
+        render(
+            <AppContext.Provider value={{ isAuthenticated: false, setIsAuthenticated: () => { } }}>
+                <LoginForm loginDialogOpen={true} handleDialogClose={() => { }} />
+            </AppContext.Provider>
+        );
+    });
 
-    userEvent.type(emailInput, 'testEmail@abc.com');
-    userEvent.type(passwordInput, 'stronKpass');
-    expect(emailInput).toHaveValue('testEmail@abc.com');
-    expect(passwordInput).toHaveValue('stronKpass');
+    it('sends a successful login request', async () => {
+        const emailInput: HTMLElement = screen.getByTestId('login-email-input');
+        const passwordInput: HTMLElement = screen.getByTestId('login-password-input');
 
-    const mockSignInFn = jest.fn().mockImplementation();
-    Auth.signIn = mockSignInFn;
+        userEvent.type(emailInput, 'testEmail@abc.com');
+        userEvent.type(passwordInput, 'stronKpass');
+        expect(emailInput).toHaveValue('testEmail@abc.com');
+        expect(passwordInput).toHaveValue('stronKpass');
 
-    const logInWithDetails: HTMLElement = screen.getByTestId('login-dialog-button');
-    userEvent.click(logInWithDetails);
-    expect(mockSignInFn).toBeCalled();
-});
+        const mockSignInFn = jest.fn().mockImplementation();
+        Auth.signIn = mockSignInFn;
 
-it('sends an invalid login request and renders an error message', async () => {
-    const emailInput: HTMLElement = screen.getByTestId('login-email-input');
-    const passwordInput: HTMLElement = screen.getByTestId('login-password-input');
+        const logInWithDetails: HTMLElement = screen.getByTestId('login-dialog-button');
+        userEvent.click(logInWithDetails);
+        expect(mockSignInFn).toBeCalled();
+    });
 
-    userEvent.type(emailInput, 'testEmail@abc.com');
-    userEvent.type(passwordInput, 'stronKpass');
+    it('sends an invalid login request and renders an error message', async () => {
+        const emailInput: HTMLElement = screen.getByTestId('login-email-input');
+        const passwordInput: HTMLElement = screen.getByTestId('login-password-input');
 
-    Auth.signIn = jest.fn().mockImplementation(() => { throw new Error('Incorrect username or password.'); });
-    const consoleSpy = jest.spyOn(global.console, 'error').mockImplementation();
+        userEvent.type(emailInput, 'testEmail@abc.com');
+        userEvent.type(passwordInput, 'stronKpass');
 
-    const logInWithDetails: HTMLElement = screen.getByTestId('login-dialog-button');
-    userEvent.click(logInWithDetails);
-    const errorMessage = await screen.findByText(/incorrect username or password/i);
-    expect(consoleSpy).toBeCalled();
-    expect(errorMessage).toBeInTheDocument();
-    consoleSpy.mockRestore();
+        Auth.signIn = jest.fn().mockImplementation(() => { throw new Error('Incorrect username or password.'); });
+        const consoleSpy = jest.spyOn(global.console, 'error').mockImplementation();
+
+        const logInWithDetails: HTMLElement = screen.getByTestId('login-dialog-button');
+        userEvent.click(logInWithDetails);
+        const errorMessage = await screen.findByText(/incorrect username or password/i);
+        expect(consoleSpy).toBeCalled();
+        expect(errorMessage).toBeInTheDocument();
+        consoleSpy.mockRestore();
+    });
 });

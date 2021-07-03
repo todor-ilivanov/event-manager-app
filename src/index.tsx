@@ -11,7 +11,7 @@ Amplify.configure({
         region: awsConfig.cognito.REGION,
         userPoolId: awsConfig.cognito.USER_POOL_ID,
         identityPoolId: awsConfig.cognito.IDENTITY_POOL_ID,
-        userPoolWebClientId: awsConfig.cognito.APP_CLIENT_ID,
+        userPoolWebClientId: awsConfig.cognito.APP_CLIENT_ID
     },
     Storage: {
         region: awsConfig.s3.REGION,
@@ -21,7 +21,7 @@ Amplify.configure({
     API: {
         endpoints: [
             {
-                name: "event-manager-api",
+                name: "events",
                 endpoint: awsConfig.apiGateway.URL,
                 region: awsConfig.apiGateway.REGION
             },

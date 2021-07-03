@@ -5,7 +5,7 @@ const awsConfig = {
     },
     apiGateway: {
         REGION: 'eu-west-2',
-        URL: 'https://o1w3347f92.execute-api.eu-west-2.amazonaws.com/',
+        URL: 'https://ped6kj9h3h.execute-api.eu-west-2.amazonaws.com/dev',
     },
     cognito: {
         REGION: 'eu-west-2',

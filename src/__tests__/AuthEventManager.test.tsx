@@ -5,20 +5,23 @@ import AuthEventManager from '../components/AuthEventManager';
 import { Auth } from 'aws-amplify';
 import { AppContext } from '../AppContext';
 
-beforeEach(() => {
-    render(
-        <AppContext.Provider value={{ isAuthenticated: true, setIsAuthenticated: () => { } }}>
-            <AuthEventManager />
-        </AppContext.Provider>
-    );
-});
+describe('AuthEventManager', () => {
 
-it('signs out the user when the Log Out button is clicked', async () => {
+    beforeEach(() => {
+        render(
+            <AppContext.Provider value={{ isAuthenticated: true, setIsAuthenticated: () => { } }}>
+                <AuthEventManager />
+            </AppContext.Provider>
+        );
+    });
 
-    const mockSignOutFn = jest.fn().mockImplementation();
-    Auth.signOut = mockSignOutFn;
+    it('signs out the user when the Log Out button is clicked', async () => {
 
-    const logOutButton: HTMLElement = screen.getByText(/log out/i);
-    userEvent.click(logOutButton);
-    expect(mockSignOutFn).toBeCalled();
+        const mockSignOutFn = jest.fn().mockImplementation();
+        Auth.signOut = mockSignOutFn;
+
+        const logOutButton: HTMLElement = screen.getByText(/log out/i);
+        userEvent.click(logOutButton);
+        expect(mockSignOutFn).toBeCalled();
+    });
 });
