@@ -60,6 +60,12 @@ const LoginForm = (props: LoginFormProps) => {
             open={loginDialogOpen}
             onClose={handleDialogClose}
             aria-labelledby="form-dialog-title"
+            onKeyPress={
+                (e) => {
+                    if(e.key === 'Enter')
+                        attemptLogin();
+                }
+            }
         >
             <DialogTitle id="form-dialog-title">Log In</DialogTitle>
             <DialogContent>
