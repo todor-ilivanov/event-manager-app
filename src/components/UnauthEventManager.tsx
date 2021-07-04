@@ -2,13 +2,18 @@ import { Grid, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import LoginForm from './LoginForm';
 import EventsToolbar from './EventsToolbar';
+import SignupForm from './SignupForm';
 
 const UnauthEventManager = () => {
-    const [loginDialogOpen, setLoginDialogOpenOpen] = useState<boolean>(false);
+    const [loginDialogOpen, setLoginDialogOpen] = useState<boolean>(false);
+    const [signupDialogOpen, setSignupDialogOpen] = useState<boolean>(false);
 
     return (
         <>
-            <EventsToolbar setDialogOpen={setLoginDialogOpenOpen} />
+            <EventsToolbar
+                setLoginDialogOpen={setLoginDialogOpen}
+                setSignupDialogOpen={setSignupDialogOpen}
+            />
             <Grid
                 container
                 spacing={2}
@@ -28,9 +33,13 @@ const UnauthEventManager = () => {
                     </Typography>
                 </Grid>
             </Grid>
+            <SignupForm
+                signupDialogOpen={signupDialogOpen}
+                handleDialogClose={() => setSignupDialogOpen(false)}
+            />
             <LoginForm
                 loginDialogOpen={loginDialogOpen}
-                handleDialogClose={() => setLoginDialogOpenOpen(false)}
+                handleDialogClose={() => setLoginDialogOpen(false)}
             />
         </>
     );

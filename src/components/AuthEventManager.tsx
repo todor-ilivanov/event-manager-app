@@ -28,7 +28,9 @@ const AuthEventManager = () => {
 
     return (
         <>
-            <EventsToolbar setDialogOpen={setCreateEventDialogOpen} />
+            <EventsToolbar
+                setCreateEventDialogOpen={setCreateEventDialogOpen}
+            />
             {
                 !isLoadingEvents ?
                     <EventsDisplay events={events} />
