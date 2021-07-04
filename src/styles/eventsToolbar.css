@@ -1,0 +1,9 @@
+ .new-event-button {
+    padding: 10px !important;
+    margin-right: 15px !important;
+    background-color: #30B700 !important;
+ }
+
+ .new-event-button:hover {
+    background-color: #279400 !important;
+ }

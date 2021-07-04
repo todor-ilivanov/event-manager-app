@@ -1,0 +1,12 @@
+#events-grid {
+    margin: 10px;
+}
+
+.event-status {
+    margin-left: 5px !important;
+    margin-bottom: 20px !important;
+}
+
+.events-group {
+    margin-bottom: 40px !important;
+}

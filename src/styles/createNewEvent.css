@@ -1,0 +1,11 @@
+.new-event-input {
+    margin: 15px;
+}
+
+.event-creation-error {
+    margin-bottom: 5px;
+}
+
+#end-date-picker {
+    float: right;
+}
