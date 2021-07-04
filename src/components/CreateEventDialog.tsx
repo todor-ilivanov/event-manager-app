@@ -7,8 +7,7 @@ import {
     DialogContent,
     DialogTitle,
     TextField,
-    LinearProgress,
-    DialogContentText
+    LinearProgress
 } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -18,6 +17,7 @@ import { useCreateNewEvent } from '../hooks/EventsApiHooks';
 import { Alert } from '@material-ui/lab';
 import { getBlankEvent, EventDTO } from '../models/Event';
 import { stringToDate } from '../utils/dateUtils';
+import { DatesInput } from '../models/DateModels';
 
 type CreateEventDialogProps = {
     open: boolean;
@@ -32,6 +32,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     const [newEvent, setNewEvent] = useState<EventDTO>(getBlankEvent());
     const [createEventRequest, setCreateEventRequest] = useState<CreateEventRequest>();
     const [inputValidationErrors, setInputValidationErrors] = useState<string[]>([]);
+    const [datesInput, setDatesInput] = useState<DatesInput>({ startDate: new Date(), endDate: new Date() });
 
     const {
         data: createEventResponse,
@@ -48,36 +49,37 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
         }
     }, [createEventResponse, setShouldFetchEvents, handleDialogClose]);
 
-    const getDateString = (date: Date | undefined | null): string => {
-        if(!date) {
-            throw new Error('Incorrect date format.');
-        }
-        return date.toLocaleDateString('gb-EN');
-    };
-
-    const createNewEvent = (newEvent: EventDTO) => {
+    const createNewEvent = (newEvent: EventDTO, datesInput: DatesInput) => {
+        newEvent.startDate = datesInput.startDate.toLocaleDateString("gb-EN");
+        newEvent.endDate = datesInput.endDate.toLocaleDateString("gb-EN");
         const validationErrors = validateInput(newEvent);
         if(validationErrors.length === 0) {
             const creationRequest = buildCreateEventRequest(newEvent);
             setCreateEventRequest(creationRequest);
         }
-    }
+    };
 
     const validateInput = (newEvent: EventDTO): string[] => {
         const fieldsToValidate = ['headline', 'description', 'city'];
         const errors: string[] = fieldsToValidate
             .filter(field => newEvent[field] !== undefined && newEvent[field]!!.length === 0)
             .map(field => `The ${field} cannot be empty.`);
-        
+
         const start: Date = stringToDate(newEvent.startDate);
         const end: Date = stringToDate(newEvent.endDate);
 
         if(start > end) {
-            errors.push('The end date must be later than the start date.')
+            errors.push('The end date must be later than the start date.');
         }
         setInputValidationErrors(errors);
         return errors;
-    }
+    };
+
+    const handleDateChange = (date: Date | null, key: string) => {
+        if(date !== null) {
+            setDatesInput({...datesInput, [key]: date})
+        }
+    };
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -129,12 +131,9 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                                 margin="normal"
                                 id="start-date-picker"
                                 label="Start Date"
-                                value={
-                                    newEvent.startDate.length !== 0 ?
-                                        stringToDate(newEvent.startDate)
-                                        : new Date()
-                                }
-                                onChange={(e) => setNewEvent({ ...newEvent, startDate: getDateString(e) })}
+                                value={datesInput.startDate}
+                                inputProps={{ 'data-testid': 'start-date-picker' }}
+                                onChange={(e) => handleDateChange(e, 'startDate')}
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
@@ -146,19 +145,16 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                                 margin="normal"
                                 id="end-date-picker"
                                 label="End Date"
-                                value={
-                                    newEvent.endDate.length !== 0 ?
-                                        stringToDate(newEvent.endDate)
-                                        : new Date()
-                                }
-                                onChange={(e) => setNewEvent({ ...newEvent, endDate: getDateString(e) })}
+                                value={datesInput.endDate}
+                                inputProps={{ 'data-testid': 'end-date-picker' }}
+                                onChange={(e) => handleDateChange(e, 'endDate')}
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
                             />
                         </Grid>
                     </div>
-                    <DialogContentText>
+                    <DialogContent>
                         {
                             eventCreationError ?
                                 <Alert className="event-creation-error" severity="error">
@@ -167,13 +163,13 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                         }
                         {
                             inputValidationErrors.length > 0 ?
-                                inputValidationErrors.map(error =>
-                                    <Alert className="event-creation-error" severity="error">
+                                inputValidationErrors.map((error, index) =>
+                                    <Alert className="event-creation-error" key={index} severity="error">
                                         {error}
                                     </Alert>
                                 ) : <></>
                         }
-                    </DialogContentText>
+                    </DialogContent>
                 </DialogContent>
                 <DialogActions>
                     <Button color="primary" onClick={handleDialogClose}>
@@ -182,7 +178,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                     <Button
                         color="primary"
                         variant="contained"
-                        onClick={() => createNewEvent(newEvent)}
+                        onClick={() => createNewEvent(newEvent, datesInput)}
                         data-testid="create-new-event-submit"
                     >
                         Create

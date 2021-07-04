@@ -1,4 +1,4 @@
-import { EventDTO } from '../../models/Event';
+import { EventDTO } from '../models/Event';
 
 export const mockEvents = [
     {

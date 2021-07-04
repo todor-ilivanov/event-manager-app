@@ -5,7 +5,7 @@ import AuthEventManager from '../components/AuthEventManager';
 import { Auth, API } from 'aws-amplify';
 import { AppContext } from '../AppContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { mockEvents } from './testutils/mockEvents';
+import { mockEvents } from '../testutils/mockEvents';
 
 describe('AuthEventManager', () => {
 

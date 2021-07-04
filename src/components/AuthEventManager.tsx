@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Button } from '@material-ui/core';
+import { Container, Button, Backdrop, CircularProgress } from '@material-ui/core';
 import { useAppContext } from '../AppContext';
 import { Auth } from 'aws-amplify';
 import { useEvents } from '../hooks/EventsApiHooks';
@@ -56,7 +56,13 @@ const AuthEventManager = () => {
                 + New Event
             </Button>
             <Button onClick={handleLogout}>Log Out</Button>
-            <EventsDisplay events={events} isLoading={isLoadingEvents} />
+            {
+                !isLoadingEvents ?
+                    <EventsDisplay events={events} />
+                    : <Backdrop open={true}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
+            }
             <Container maxWidth="sm">
                 {
                     eventsFetchError ? <Alert severity="error">
