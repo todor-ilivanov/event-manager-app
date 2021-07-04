@@ -73,7 +73,12 @@ const SignupForm = (props: SignupFormProps) => {
             setIsAuthenticated(true);
         } catch(error) {
             console.error(error);
+            setSignupError({
+                message: error.message,
+                shouldRender: true,
+            } as SignupError);
             setSignupLoading(false);
+            setNewUser(undefined);
         }
     };
 
@@ -160,6 +165,7 @@ const SignupForm = (props: SignupFormProps) => {
                             className="outlined-basic"
                             label="Verification Code"
                             variant="outlined"
+                            value={verificationCode}
                             inputProps={{ 'data-testid': 'signup-verification-input' }}
                             onChange={(e: InputEvent) =>
                                 setVerificationCode(e.target.value)
@@ -173,7 +179,7 @@ const SignupForm = (props: SignupFormProps) => {
                                     {signupError.message}
                                 </Alert> : <></>
                         }
-                    </DialogContentText>;
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button fullWidth color="primary" onClick={attemptVerification}>
