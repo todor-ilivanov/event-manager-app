@@ -4,13 +4,16 @@ import userEvent from '@testing-library/user-event';
 import AuthEventManager from '../components/AuthEventManager';
 import { Auth } from 'aws-amplify';
 import { AppContext } from '../AppContext';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 describe('AuthEventManager', () => {
 
     beforeEach(() => {
         render(
             <AppContext.Provider value={{ isAuthenticated: true, setIsAuthenticated: () => { } }}>
-                <AuthEventManager />
+                <QueryClientProvider client={new QueryClient()}>
+                    <AuthEventManager />
+                </QueryClientProvider>
             </AppContext.Provider>
         );
     });

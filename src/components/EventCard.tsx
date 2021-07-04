@@ -1,19 +1,21 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
 import { EventDTO } from '../models/Event';
 import { stringToDate } from '../utils/dateUtils';
 import { useEventCardStyles } from '../hooks/MaterialUIStylesHooks';
 
 type EventCardProps = {
-    event: EventDTO
+    event: EventDTO;
+    setSelectedEvent: (event: EventDTO) => void;
+    setOpenDetailsDialog: (open: boolean) => void;
 }
 
 const EventCard = (props: EventCardProps) => {
-    const { event } = props;
+    const { event, setSelectedEvent, setOpenDetailsDialog } = props;
     const classes = useEventCardStyles();
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} data-testid="event-card">
             <CardContent>
                 <Typography variant="h5" component="h2">
                     {event.headline}
@@ -25,6 +27,18 @@ const EventCard = (props: EventCardProps) => {
                     {event.description}
                 </Typography>
             </CardContent>
+            <CardActions>
+                <Button size="small"
+                    onClick={
+                        () => {
+                            setSelectedEvent(event);
+                            setOpenDetailsDialog(true);
+                        }
+                    }
+                >
+                    See Details
+                </Button>
+            </CardActions>
         </Card>
     );
 }

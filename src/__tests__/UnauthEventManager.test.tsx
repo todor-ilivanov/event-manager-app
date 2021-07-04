@@ -5,6 +5,14 @@ import UnauthEventManager from '../components/UnauthEventManager';
 
 describe('UnauthEventManager', () => {
 
+    it('renders the welcoming messages', async () => {
+        render(<UnauthEventManager />);
+        const welcomeMessage1: HTMLElement = screen.getByText(/welcome/i);
+        expect(welcomeMessage1).toBeInTheDocument();
+        const welcomeMessage2: HTMLElement = screen.getByText(/create and manage events/i);
+        expect(welcomeMessage2).toBeInTheDocument();
+    });
+
     it('renders the login dialog form in a dialog when the button is clicked', async () => {
         render(<UnauthEventManager />);
         const logInButton: HTMLElement = screen.getByText(/log in/i);

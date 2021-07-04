@@ -21,8 +21,8 @@ describe('App Component', () => {
     it('renders the App component for an authenticated user', async () => {
         Auth.currentSession = jest.fn().mockImplementation();
         render(<App />);
-        const helloUser: HTMLElement = await screen.findByText(/hello user/i);
-        expect(helloUser).toBeInTheDocument();
+        const newEventButton: HTMLElement = await screen.findByText(/new event/i);
+        expect(newEventButton).toBeInTheDocument();
         const logOutButton: HTMLElement = screen.getByText(/log out/i);
         expect(logOutButton).toBeInTheDocument();
     });

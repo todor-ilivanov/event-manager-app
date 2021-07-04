@@ -12,6 +12,6 @@ export const useEvents = (enabled: boolean) => {
 export const useCreateNewEvent = (eventRequest: CreateEventRequest | undefined) => {
     return useQuery(['createNewEvent', eventRequest],
         () => API.post('events', '/create', { body: eventRequest }),
-        { enabled: eventRequest !== undefined}
+        { enabled: eventRequest !== undefined }
     );
 };

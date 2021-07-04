@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '@material-ui/core';
+import { Container, Button } from '@material-ui/core';
 import { useAppContext } from '../AppContext';
 import { Auth } from 'aws-amplify';
 import { useCreateNewEvent, useEvents } from '../hooks/EventsApiHooks';
 import { EventDTO } from '../models/Event';
 import { CreateEventRequest } from '../models/ApiRequests';
 import EventsDisplay from './EventsDisplay';
+import { Alert } from '@material-ui/lab';
 
 const AuthEventManager = () => {
 
@@ -61,15 +62,27 @@ const AuthEventManager = () => {
 
     return (
         <>
-            <EventsDisplay events={events} isLoading={isLoadingEvents} />
-            {
-                eventsFetchError && <div>Error</div>
-            }
-            {
-                eventCreationError && <div>Error</div>
-            }
-            <Button onClick={createEvent} disabled={isLoadingEventCreation}>Create new event</Button>
+            <Button
+                onClick={createEvent}
+                disabled={isLoadingEventCreation}
+                // startIcon={<AddIcon />}
+            >
+                New Event
+            </Button>
             <Button onClick={handleLogout}>Log Out</Button>
+            <EventsDisplay events={events} isLoading={isLoadingEvents} />
+            <Container maxWidth="sm">
+                {
+                    eventsFetchError && <Alert severity="error">
+                        An error has occurred when getting events.
+                    </Alert>
+                }
+                {
+                    eventCreationError && <Alert severity="error">
+                        An error has occured when creating a new event.
+                    </Alert>
+                }
+            </Container>
         </>
     );
 };

@@ -1,5 +1,5 @@
 export const stringToDate = (dateString: string): Date => {
-    const dateParams = dateString.split('/');
+    const dateParams: string[] = dateString.split('/');
     if(dateParams.length >= 3) {
         const date = new Date();
         date.setDate(parseInt(dateParams[0]));
