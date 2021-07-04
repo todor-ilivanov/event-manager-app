@@ -1,7 +1,8 @@
 import React from 'react';
-import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { AppBar, Button, Grid, Toolbar, Typography } from '@material-ui/core';
 import { useAppContext } from '../AppContext';
 import { Auth } from 'aws-amplify';
+import '../styles/eventsToolbar.css';
 
 type EventsToolbarProps = {
     setDialogOpen: (val: boolean) => void;
@@ -22,40 +23,51 @@ const EventsToolbar = (props: EventsToolbarProps) => {
         }
     };
 
-    const renderAuthToolbar = () => {
-        return (
-            <>
-                <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => setDialogOpen(true)}
-                >
-                    + New Event
-                </Button>
-                <Button onClick={handleLogout}>Log Out</Button>
-            </>
-        );
-    };
-
-    const renderUnauthToolbar = () => {
-        return (
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setDialogOpen(true)}
-            >
-                Log In
-            </Button>
-        );
-    };
-
     return (
         <AppBar position="static">
             <Toolbar>
-                {
-                    isAuthenticated ? renderAuthToolbar() : renderUnauthToolbar()
+                <Grid
+                    container
+                    justify="space-between"
+                >
+                    <Grid item>
+                        <Typography variant="h5" component="h2">
+                            Event Manager App
+                        </Typography>
+                    </Grid>
 
-                }
+                    {
+                        isAuthenticated ?
+                            <>
+                                <Grid item>
+                                    <Button
+                                        color="inherit"
+                                        className="new-event-button"
+                                        onClick={() => setDialogOpen(true)}
+                                    >
+                                        + New Event
+                                    </Button>
+                                    <Button
+                                        color="inherit"
+                                        className="log-out-button"
+                                        onClick={handleLogout}
+                                    >
+                                        Log Out
+                                    </Button>
+                                </Grid>
+                            </>
+                            :
+                            <Grid item>
+                                <Button
+                                    color="inherit"
+                                    className="log-in-button"
+                                    onClick={() => setDialogOpen(true)}
+                                >
+                                    Log In
+                                </Button>
+                            </Grid>
+                    }
+                </Grid>
             </Toolbar>
         </AppBar>
     );

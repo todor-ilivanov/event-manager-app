@@ -22,9 +22,6 @@ const EventCard = (props: EventCardProps) => {
                 <Typography className={classes.pos} color="textSecondary">
                     {getEventStatus(event)}
                 </Typography>
-                <Typography variant="body2" component="p">
-                    {event.description}
-                </Typography>
             </CardContent>
             <CardActions>
                 <Button size="small"
