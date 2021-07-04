@@ -88,6 +88,12 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 fullWidth
                 maxWidth="sm"
                 onClose={handleDialogClose}
+                onKeyPress={
+                    (e) => {
+                        if(e.key === 'Enter')
+                            createNewEvent(newEvent, datesInput);
+                    }
+                }
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title">Create New Event</DialogTitle>
