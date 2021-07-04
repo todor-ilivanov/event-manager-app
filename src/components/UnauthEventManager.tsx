@@ -3,7 +3,6 @@ import {
     Button,
     Typography,
 } from '@material-ui/core';
-import '../styles/login.css';
 import React, { useState } from 'react';
 import LoginForm from './LoginForm';
 

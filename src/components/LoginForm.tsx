@@ -8,9 +8,11 @@ import {
     LinearProgress,
     TextField
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { Auth } from 'aws-amplify';
 import React, { useState } from 'react';
 import { useAppContext } from '../AppContext';
+import '../styles/login.css';
 
 type InputEvent = React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>;
 
@@ -53,6 +55,8 @@ const LoginForm = (props: LoginFormProps) => {
 
     return (
         <Dialog
+            fullWidth
+            maxWidth="xs"
             open={loginDialogOpen}
             onClose={handleDialogClose}
             aria-labelledby="form-dialog-title"
@@ -61,7 +65,8 @@ const LoginForm = (props: LoginFormProps) => {
             <DialogContent>
                 <div className="login-input-field">
                     <TextField
-                        id="outlined-basic"
+                        fullWidth
+                        className="outlined-basic"
                         label="E-mail"
                         variant="outlined"
                         inputProps={{ 'data-testid': 'login-email-input' }}
@@ -72,7 +77,8 @@ const LoginForm = (props: LoginFormProps) => {
                 </div>
                 <div className="login-input-field">
                     <TextField
-                        id="outlined-basic"
+                        fullWidth
+                        className="outlined-basic"
                         label="Password"
                         variant="outlined"
                         type="password"
@@ -85,9 +91,9 @@ const LoginForm = (props: LoginFormProps) => {
                 <DialogContentText>
                     {
                         loginError.shouldRender ?
-                            <span className={'login-error'}>
+                            <Alert severity="error">
                                 {loginError.message}
-                            </span> : <></>
+                            </Alert> : <></>
                     }
                 </DialogContentText>
             </DialogContent>

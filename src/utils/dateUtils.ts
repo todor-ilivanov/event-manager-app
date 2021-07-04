@@ -9,4 +9,4 @@ export const stringToDate = (dateString: string): Date => {
     } else {
         throw new Error('Incorrect date format.');
     }
-}
+};

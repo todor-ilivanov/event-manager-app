@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, CircularProgress, Typography } from '@material-ui/core';
-import { EventDTO } from '../models/Event';
+import { EventDTO, getEventStatus } from '../models/Event';
 import EventCard from './EventCard';
 import { useEventsGridStyles } from '../hooks/MaterialUIStylesHooks';
 import SelectedEventDialog from './SelectedEventDialog';
@@ -23,32 +23,41 @@ const EventsDisplay = (props: EventsDisplayProps) => {
     };
 
     const renderEvents = (events: EventDTO[]) => {
-        if(events.length === 0) {
-            return <Typography variant="h5" component="h2">
-                You have no events yet, feel free to create some!
-            </Typography>
-        } else {
-            return events.map((event) => (
-                <Grid key={event.eventId} item>
-                    <EventCard
-                        event={event}
-                        setSelectedEvent={setSelectedEvent}
-                        setOpenDetailsDialog={setOpenDetailsDialog}
-                    />
-                </Grid>)
-            )
-        }
-    }
+        return events.map((event) => (
+            <Grid key={event.eventId} item>
+                <EventCard
+                    event={event}
+                    setSelectedEvent={setSelectedEvent}
+                    setOpenDetailsDialog={setOpenDetailsDialog}
+                />
+            </Grid>)
+        );
+    };
 
     return (<>
         <Grid container className={classes.root} spacing={2}>
-            <Grid item xs={12}>
-                <Grid container justify="center" spacing={2}>
-                    {
-                        !isLoading ? renderEvents(events) : <CircularProgress size={70} />
-                    }
+            {
+                events.length === 0 ? <Typography variant="h5" component="h2">
+                    You have no events yet, feel free to create some!
+                </Typography> :
+                <Grid item xs={12}>
+                    <Grid container justify="flex-start" spacing={2}>
+                        {
+                            !isLoading ? renderEvents(events.filter(event => getEventStatus(event) === 'Ongoing')) : <CircularProgress size={70} />
+                        }
+                    </Grid>
+                    <Grid container justify="flex-start" spacing={2}>
+                        {
+                            !isLoading ? renderEvents(events.filter(event => getEventStatus(event) === 'Upcoming')) : <CircularProgress size={70} />
+                        }
+                    </Grid>
+                    <Grid container justify="flex-start" spacing={2}>
+                        {
+                            !isLoading ? renderEvents(events.filter(event => getEventStatus(event) === 'Past')) : <CircularProgress size={70} />
+                        }
+                    </Grid>
                 </Grid>
-            </Grid>
+            }
         </Grid>
         <SelectedEventDialog
             open={openDetailsDialog}

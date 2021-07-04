@@ -1,5 +1,12 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText, 
+    DialogTitle
+} from '@material-ui/core';
 import { EventDTO } from '../models/Event';
 
 type SelectedEventDialogProps = {
@@ -12,6 +19,12 @@ type SelectedEventDialogProps = {
 const SelectedEventDialog = (props: SelectedEventDialogProps) => {
 
     const { selectedEvent, open, handleClose, setSelectedEvent } = props;
+
+    const getDisplayDate = (selectedEvent: EventDTO) => {
+        return selectedEvent.startDate === selectedEvent.endDate
+            ? selectedEvent.startDate
+            : `${selectedEvent.startDate} - ${selectedEvent.endDate}`
+    }
 
     return (<>
         {
@@ -31,11 +44,7 @@ const SelectedEventDialog = (props: SelectedEventDialogProps) => {
                         {selectedEvent.description}
                     </DialogContentText>
                     <DialogContentText id="alert-dialog-description">
-                        {
-                            selectedEvent.startDate === selectedEvent.endDate
-                                ? selectedEvent.startDate
-                                : `${selectedEvent.startDate} - ${selectedEvent.endDate}`
-                        }
+                        {getDisplayDate(selectedEvent)}
                     </DialogContentText>
                     <DialogContentText id="alert-dialog-description">
                         {selectedEvent.city}
