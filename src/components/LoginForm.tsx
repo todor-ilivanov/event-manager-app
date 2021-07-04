@@ -12,14 +12,10 @@ import { Alert } from '@material-ui/lab';
 import { Auth } from 'aws-amplify';
 import React, { useState } from 'react';
 import { useAppContext } from '../AppContext';
+import { LoginError } from '../models/Errors';
 import '../styles/login.css';
 
 type InputEvent = React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>;
-
-type LoginError = {
-    message: string;
-    shouldRender: boolean;
-};
 
 type LoginFormProps = {
     loginDialogOpen: boolean;

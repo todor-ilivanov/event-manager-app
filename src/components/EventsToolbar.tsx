@@ -5,13 +5,15 @@ import { Auth } from 'aws-amplify';
 import '../styles/eventsToolbar.css';
 
 type EventsToolbarProps = {
-    setDialogOpen: (val: boolean) => void;
+    setSignupDialogOpen?: (val: boolean) => void;
+    setLoginDialogOpen?: (val: boolean) => void;
+    setCreateEventDialogOpen?: (val: boolean) => void;
 };
 
 const EventsToolbar = (props: EventsToolbarProps) => {
 
     const { isAuthenticated, setIsAuthenticated } = useAppContext();
-    const { setDialogOpen } = props;
+    const { setSignupDialogOpen, setLoginDialogOpen, setCreateEventDialogOpen } = props;
 
     const handleLogout = async () => {
         try {
@@ -43,7 +45,10 @@ const EventsToolbar = (props: EventsToolbarProps) => {
                                     <Button
                                         color="inherit"
                                         className="new-event-button"
-                                        onClick={() => setDialogOpen(true)}
+                                        onClick={() => {
+                                            if(setCreateEventDialogOpen !== undefined)
+                                                setCreateEventDialogOpen(true);
+                                        }}
                                     >
                                         + New Event
                                     </Button>
@@ -60,8 +65,21 @@ const EventsToolbar = (props: EventsToolbarProps) => {
                             <Grid item>
                                 <Button
                                     color="inherit"
+                                    className="sign-up-button"
+                                    onClick={() => {
+                                        if(setSignupDialogOpen)
+                                            setSignupDialogOpen(true);
+                                    }}
+                                >
+                                    Sign Up
+                                </Button>
+                                <Button
+                                    color="inherit"
                                     className="log-in-button"
-                                    onClick={() => setDialogOpen(true)}
+                                    onClick={() => {
+                                        if(setLoginDialogOpen !== undefined)
+                                            setLoginDialogOpen(true);
+                                    }}
                                 >
                                     Log In
                                 </Button>
