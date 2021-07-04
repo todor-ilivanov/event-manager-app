@@ -20,10 +20,10 @@ describe('UnauthEventManager', () => {
         const dialog: HTMLElement = await screen.findByRole('dialog');
         expect(dialog).toBeInTheDocument();
 
-        const emailInput: HTMLElement = screen.getByLabelText(/e-mail/i);
+        const emailInput: HTMLElement = screen.getByTestId('login-email-input');
         expect(emailInput).toBeInTheDocument();
 
-        const passwordInput: HTMLElement = screen.getByLabelText(/password/i);
+        const passwordInput: HTMLElement = screen.getByTestId('login-password-input');
         expect(passwordInput).toBeInTheDocument();
 
         const logInWithDetails: HTMLElement = screen.getByTestId('login-dialog-button');
