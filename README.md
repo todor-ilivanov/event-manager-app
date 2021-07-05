@@ -8,6 +8,11 @@ Netlify CI/CD is set up for this project. Deployed at https://serene-goldwasser-
 ## Workflow
 Authentication is done via AWS Cognito, and API requests are routed to Lambdas using API Gateway. Storage of events is done using DynamoDB.
 
+## Local Development
+* Install dependencies - `yarn install`
+* Run the app - `yarn start`
+* Run unit tests - `yarn test`
+
 ## Future development
 * Styling improvements
 * E2E tests
