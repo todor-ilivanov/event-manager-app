@@ -182,7 +182,12 @@ const SignupForm = (props: SignupFormProps) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button fullWidth color="primary" onClick={attemptVerification}>
+                    <Button
+                        fullWidth
+                        color="primary"
+                        onClick={attemptVerification}
+                        data-testid="verify-dialog-button"
+                    >
                         Verify
                     </Button>
                 </DialogActions>
