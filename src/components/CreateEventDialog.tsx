@@ -18,6 +18,7 @@ import { Alert } from '@material-ui/lab';
 import { getBlankEvent, EventDTO } from '../models/Event';
 import { DatesInput } from '../models/DateModels';
 import { validateNewEvent } from '../utils/validationUtils';
+import { localizedDateToString } from '../utils/dateUtils';
 
 type CreateEventDialogProps = {
     open: boolean;
@@ -50,8 +51,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     }, [createEventResponse, setShouldFetchEvents, handleDialogClose]);
 
     const createNewEvent = (newEvent: EventDTO, datesInput: DatesInput) => {
-        newEvent.startDate = datesInput.startDate.toLocaleDateString("gb-EN");
-        newEvent.endDate = datesInput.endDate.toLocaleDateString("gb-EN");
+        newEvent.startDate = localizedDateToString(datesInput.startDate);
+        newEvent.endDate = localizedDateToString(datesInput.endDate);
         const validationErrors = validateInput(newEvent);
         if(validationErrors.length === 0) {
             const creationRequest = buildCreateEventRequest(newEvent);

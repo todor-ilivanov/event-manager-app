@@ -62,4 +62,15 @@ describe('SignupForm', () => {
         const error = await screen.findByText(/cognito API error/i);
         expect(error).toBeInTheDocument();
     });
+
+    it('resends verification code when account already exists', async () => {
+        const mockSignUpFn = jest.fn().mockImplementation(
+            () => Promise.reject({ code: 'UsernameExistsException' })
+        );
+        const mockResendSignUpFn = jest.fn().mockImplementation();
+        Auth.signUp = mockSignUpFn;
+        Auth.resendSignUp = mockResendSignUpFn;
+        await signUpHelper('someTestEmail@test.com', 'securePass123!', 'securePass123!');
+        expect(mockResendSignUpFn).toHaveBeenCalled();
+    });
 });
