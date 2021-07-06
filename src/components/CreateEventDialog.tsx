@@ -16,8 +16,8 @@ import { buildCreateEventRequest, CreateEventRequest } from '../models/ApiReques
 import { useCreateNewEvent } from '../hooks/EventsApiHooks';
 import { Alert } from '@material-ui/lab';
 import { getBlankEvent, EventDTO } from '../models/Event';
-import { stringToDate } from '../utils/dateUtils';
 import { DatesInput } from '../models/DateModels';
+import { validateNewEvent } from '../utils/validationUtils';
 
 type CreateEventDialogProps = {
     open: boolean;
@@ -60,17 +60,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     };
 
     const validateInput = (newEvent: EventDTO): string[] => {
-        const fieldsToValidate = ['headline', 'description', 'city'];
-        const errors: string[] = fieldsToValidate
-            .filter(field => newEvent[field] !== undefined && newEvent[field]!!.length === 0)
-            .map(field => `The ${field} cannot be empty.`);
-
-        const start: Date = stringToDate(newEvent.startDate);
-        const end: Date = stringToDate(newEvent.endDate);
-
-        if(start > end) {
-            errors.push('The end date must be later than the start date.');
-        }
+        const errors = validateNewEvent(newEvent);
         setInputValidationErrors(errors);
         return errors;
     };

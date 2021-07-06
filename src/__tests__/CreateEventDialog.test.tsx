@@ -23,13 +23,18 @@ describe('CreateEventDialog', () => {
         );
     });
 
-    const populateInputFields = () => {
+    const populateInputFields = (headline: string, description: string, city: string) => {
         const headlineInputField = screen.getByTestId('headline-input');
         const descriptionInputField = screen.getByTestId('description-input');
         const cityInputField = screen.getByTestId('city-input');
-        userEvent.type(headlineInputField, 'test event headline');
-        userEvent.type(descriptionInputField, 'test event description');
-        userEvent.type(cityInputField, 'test event city');
+        userEvent.type(headlineInputField, headline);
+        userEvent.type(descriptionInputField, description);
+        userEvent.type(cityInputField, city);
+    }
+
+    const clickCreateEventButton = () => {
+        const createButton = screen.getByTestId('create-new-event-submit');
+        userEvent.click(createButton);
     }
 
     it('renders the form correctly with default dates', () => {
@@ -48,9 +53,8 @@ describe('CreateEventDialog', () => {
     it('makes the API request with a correct event', () => {
         API.post = jest.fn().mockImplementation();
 
-        populateInputFields();
-        const createButton = screen.getByTestId('create-new-event-submit');
-        userEvent.click(createButton);
+        populateInputFields('test event headline', 'test event description', 'test event city');
+        clickCreateEventButton();
 
         expect(API.post).toHaveBeenCalled();
     });
@@ -67,5 +71,15 @@ describe('CreateEventDialog', () => {
         const dateError = await screen.findByText(/must be later/i);
         expect(errors.length).toBe(3);
         expect(dateError).toBeInTheDocument();
+    });
+
+    fit('validates input field length correctly', async () => {
+        const headline = new Array(32).join('a');
+        const description = new Array(282).join('a');
+        const city = new Array(52).join('a');
+        populateInputFields(headline, description, city);
+        clickCreateEventButton();
+        const errors = await screen.findAllByText(/cannot be more than/i);
+        expect(errors.length).toBe(3);
     });
 });
