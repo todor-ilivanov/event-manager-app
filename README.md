@@ -9,12 +9,15 @@ Netlify CI/CD is set up for this project. Deployed at https://serene-goldwasser-
 Authentication is done via AWS Cognito, and API requests are routed to Lambdas using API Gateway. Storage of events is done using DynamoDB.
 
 ## Local Development
-* Install dependencies - `yarn install`
-* Run the app - `yarn start`
-* Run unit tests - `yarn test`
+* `yarn install` - install dependencies 
+* `yarn start` - run the app
+* `yarn test` - run unit tests
+
+## Weather
+Weather images taken from [openweathermap](https://openweathermap.org/weather-conditions#Icon-list) - the public API that the backend uses for weather information.
 
 ## Future development
 * Styling improvements
 * E2E tests
-* Display more information about events (e.g. weather)
+* Display more information about events
 * Integrate with an S3 bucket to allow users to upload images for their events

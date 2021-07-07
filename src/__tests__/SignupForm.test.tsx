@@ -5,6 +5,17 @@ import React from 'react';
 import { AppContext } from '../AppContext';
 import SignupForm from '../components/SignupForm';
 
+const signUpHelper = async (email: string, pass: string, confirmPass: string) => {
+    const emailInput = screen.getByTestId('signup-email-input');
+    const passwordInput = screen.getByTestId('signup-password-input');
+    const confirmPasswordInput = screen.getByTestId('signup-confirm-password-input');
+    const signUpButton = await screen.findByTestId('signup-dialog-button');
+    userEvent.type(emailInput, email);
+    userEvent.type(passwordInput, pass);
+    userEvent.type(confirmPasswordInput, confirmPass);
+    userEvent.click(signUpButton);
+};
+
 describe('SignupForm', () => {
 
     beforeEach(() => {
@@ -14,17 +25,6 @@ describe('SignupForm', () => {
             </AppContext.Provider>
         );
     });
-
-    const signUpHelper = async (email: string, pass: string, confirmPass: string) => {
-        const emailInput = screen.getByTestId('signup-email-input');
-        const passwordInput = screen.getByTestId('signup-password-input');
-        const confirmPasswordInput = screen.getByTestId('signup-confirm-password-input');
-        const signUpButton = await screen.findByTestId('signup-dialog-button');
-        userEvent.type(emailInput, email);
-        userEvent.type(passwordInput, pass);
-        userEvent.type(confirmPasswordInput, confirmPass);
-        userEvent.click(signUpButton);
-    };
 
     it('user signs up successfully', async () => {
         const mockSignUpFn = jest.fn().mockImplementation(

@@ -4,6 +4,9 @@ import MockDate from 'mockdate';
 import { stringToDate } from '../utils/dateUtils';
 import userEvent from '@testing-library/user-event';
 import { mockEvents } from '../testutils/mockEvents';
+import { EventDTO } from '../models/Event';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { API } from 'aws-amplify';
 
 describe('EventsDisplay', () => {
 
@@ -16,36 +19,83 @@ describe('EventsDisplay', () => {
     beforeEach(() => {
         const mockCurrentDate: Date = stringToDate('04/07/2021');
         MockDate.set(mockCurrentDate);
+        API.get = jest.fn().mockImplementation();
     });
 
+    const renderEventsDisplay = (events: EventDTO[]) => {
+        render(
+            <QueryClientProvider client={new QueryClient()}>
+                <EventsDisplay events={events} />
+            </QueryClientProvider>
+        );
+    };
+
+    const selectEventHelper = async (index: number): Promise<HTMLElement> => {
+        const eventCard: HTMLElement = screen.getAllByTestId('event-card')[index];
+        const seeDetailsButton: HTMLElement = within(eventCard).getByText(/see details/i);
+        userEvent.click(seeDetailsButton);
+        return screen.findByRole('dialog');
+    };
+
+    const checkTextWithinElement = (element: HTMLElement, textValue: string) => {
+        expect(within(element).getByText(textValue)).toBeInTheDocument();
+    };
+
     it('renders a list of events', () => {
-        render(<EventsDisplay events={mockEvents} />);
+        renderEventsDisplay(mockEvents);
         const eventCards: HTMLElement[] = screen.getAllByTestId('event-card');
 
         eventCards.forEach((eventCard: HTMLElement, index: number) => {
-            expect(within(eventCard).getByText(expectedHeadlineAndStatus[index][0])).toBeInTheDocument();
-            expect(within(eventCard).getByText(expectedHeadlineAndStatus[index][1])).toBeInTheDocument();
+            checkTextWithinElement(eventCard, expectedHeadlineAndStatus[index][0]);
+            checkTextWithinElement(eventCard, expectedHeadlineAndStatus[index][1]);
         });
     });
 
     it('renders the dialog box with event details when the button is clicked', async () => {
-        render(<EventsDisplay events={mockEvents} />);
-        const eventCard: HTMLElement = screen.getAllByTestId('event-card')[0];
-        const mockEvent = mockEvents[1];
+        renderEventsDisplay(mockEvents);
+        const detailsDialog: HTMLElement = await selectEventHelper(0);
+        const expectedEvent = {
+            headline: 'Test event 2',
+            description: 'Test event 2 descr',
+            startDate: '04/07/2021',
+            endDate: '05/07/2021',
+            city: 'Lisbon'
+        };
 
-        const seeDetailsButton: HTMLElement = within(eventCard).getByText(/see details/i);
-        userEvent.click(seeDetailsButton);
-
-        const detailsDialog: HTMLElement = await screen.findByRole('dialog');
         expect(detailsDialog).toBeInTheDocument();
-        expect(within(detailsDialog).getByText(mockEvent.headline)).toBeInTheDocument();
-        expect(within(detailsDialog).getByText(mockEvent.description)).toBeInTheDocument();
-        expect(within(detailsDialog).getByText(`${mockEvent.startDate} - ${mockEvent.endDate}`)).toBeInTheDocument();
-        expect(within(detailsDialog).getByText(mockEvent.city)).toBeInTheDocument();
+        checkTextWithinElement(detailsDialog, expectedEvent.headline);
+        checkTextWithinElement(detailsDialog, expectedEvent.description);
+        checkTextWithinElement(detailsDialog, `${expectedEvent.startDate} - ${expectedEvent.endDate}`);
+        checkTextWithinElement(detailsDialog, expectedEvent.city);
+    });
+
+    it('renders an event\'s weather info', async () => {
+        API.get = jest.fn().mockImplementation(() => {
+            return { city: 'Plovdiv', degreesC: 30.1, description: 'Clear', icon: '01d' };
+        });
+        renderEventsDisplay(mockEvents);
+        const detailsDialog: HTMLElement = await selectEventHelper(0);
+        checkTextWithinElement(detailsDialog, 'Clear');
+        checkTextWithinElement(detailsDialog, '30.1 °C');
+    });
+
+    it('renders a loading element when weather request is loading', async () => {
+        renderEventsDisplay(mockEvents);
+        const detailsDialog: HTMLElement = await selectEventHelper(0);
+        expect(within(detailsDialog).getByRole('progressbar')).toBeInTheDocument();
+    });
+
+    it('renders an error when weather info is unable to be fetched', async () => {
+        API.get = jest.fn().mockImplementation(() => {
+            return { error: 'Weather API Error' };
+        });
+        renderEventsDisplay(mockEvents);
+        const detailsDialog: HTMLElement = await selectEventHelper(0);
+        checkTextWithinElement(detailsDialog, 'Error getting weather data.');
     });
 
     it('renders no events and informative message that the user has none yet', () => {
-        render(<EventsDisplay events={[]} />);
+        renderEventsDisplay([]);
         const message: HTMLElement = screen.getByText('You have no events yet, feel free to create some!');
         expect(message).toBeInTheDocument();
     });
