@@ -17,7 +17,7 @@ Authentication is done via AWS Cognito, and API requests are routed to Lambdas u
 Weather images taken from [openweathermap](https://openweathermap.org/weather-conditions#Icon-list) - the public API that the backend uses for weather information.
 
 ## Future development
-* Styling improvements
+* Styling improvements 
 * E2E tests
 * Display more information about events
 * Integrate with an S3 bucket to allow users to upload images for their events
