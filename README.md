@@ -14,7 +14,7 @@ Authentication is done via AWS Cognito, and API requests are routed to Lambdas u
 * Run unit tests - `yarn test`
 
 ## Future development
-* Styling improvements
+* Styling improvements 
 * E2E tests
 * Display more information about events (e.g. weather)
 * Integrate with an S3 bucket to allow users to upload images for their events
