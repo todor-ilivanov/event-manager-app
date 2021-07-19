@@ -31,7 +31,6 @@ describe('CreateEventDialog', () => {
                 <CreateEventDialog
                     open={true}
                     handleDialogClose={() => { }}
-                    setShouldFetchEvents={() => { }}
                 />
             </QueryClientProvider>
         );

@@ -79,19 +79,13 @@ describe('EventsDisplay', () => {
         checkTextWithinElement(detailsDialog, '30.1 °C');
     });
 
-    it('renders a loading element when weather request is loading', async () => {
-        renderEventsDisplay(mockEvents);
-        const detailsDialog: HTMLElement = await selectEventHelper(0);
-        expect(within(detailsDialog).getByRole('progressbar')).toBeInTheDocument();
-    });
-
     it('renders an error when weather info is unable to be fetched', async () => {
         API.get = jest.fn().mockImplementation(() => {
             return { error: 'Weather API Error' };
         });
         renderEventsDisplay(mockEvents);
         const detailsDialog: HTMLElement = await selectEventHelper(0);
-        checkTextWithinElement(detailsDialog, 'Error getting weather data.');
+        checkTextWithinElement(detailsDialog, `Error getting weather data for Lisbon.`);
     });
 
     it('renders no events and informative message that the user has none yet', () => {

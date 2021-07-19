@@ -12,5 +12,5 @@ export const stringToDate = (dateString: string): Date => {
 };
 
 export const localizedDateToString = (date: Date): string => {
-    return date.toLocaleDateString("gb-EN");
+    return date.toLocaleDateString("en-GB");
 };

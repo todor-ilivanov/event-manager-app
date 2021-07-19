@@ -47,8 +47,11 @@ const AuthEventManager = () => {
             </Container>
             <CreateEventDialog
                 open={createEventDialogOpen}
-                handleDialogClose={() => setCreateEventDialogOpen(false)}
-                setShouldFetchEvents={setShouldFetchEvents}
+                handleDialogClose={() => {
+                        setCreateEventDialogOpen(false);
+                        setShouldFetchEvents(true);
+                    }
+                }
             />
         </>
     );

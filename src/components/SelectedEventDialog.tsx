@@ -75,17 +75,20 @@ const SelectedEventDialog = (props: SelectedEventDialogProps) => {
                         </DialogContent>
                     </Grid>
                     <Grid item className="weather-grid-item">
-                        <div className="weather-info">
-                            {
-                                (weather && !weather.error) && !weatherLoading ?
-                                    <WeatherInfo weather={weather} />
-                                    : <CircularProgress />
-                            }
-                        </div>
+                        {
+                            !weatherLoading ?
+                                <div className="weather-info">
+                                    {
+                                        (weather && !weather.error) ?
+                                            <WeatherInfo weather={weather} />
+                                            : <></>
+                                    }
+                                </div> : <CircularProgress />
+                        }
                         {
                             (weatherError || weather?.error) && !weatherLoading ?
                                 <Alert severity="error">
-                                    Error getting weather data.
+                                    Error getting weather data for {selectedEvent.city}.
                                 </Alert> : <></>
                         }
                     </Grid>
