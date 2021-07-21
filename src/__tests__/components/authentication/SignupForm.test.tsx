@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Auth } from 'aws-amplify';
 import React from 'react';
-import { AppContext } from '../AppContext';
-import SignupForm from '../components/SignupForm';
+import { AppContext } from '../../../hooks/AppContext';
+import SignupForm from '../../../components/authentication/SignupForm';
 
 const signUpHelper = async (email: string, pass: string, confirmPass: string) => {
     const emailInput = screen.getByTestId('signup-email-input');

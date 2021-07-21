@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import UnauthEventManager from '../components/UnauthEventManager';
+import UnauthEventManager from '../../../components/main/UnauthEventManager';
 
 describe('UnauthEventManager', () => {
 

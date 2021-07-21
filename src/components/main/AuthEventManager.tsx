@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Backdrop, CircularProgress } from '@material-ui/core';
-import { useEvents } from '../hooks/EventsApiHooks';
-import { EventDTO } from '../models/Event';
-import EventsDisplay from './EventsDisplay';
+import { useEvents } from '../../hooks/EventsApiHooks';
+import { EventDTO } from '../../models/Event';
+import EventsDisplay from '../events/EventsDisplay';
 import { Alert } from '@material-ui/lab';
 import CreateEventDialog from './CreateEventDialog';
 import EventsToolbar from './EventsToolbar';
@@ -29,7 +29,7 @@ const AuthEventManager = () => {
     return (
         <>
             <EventsToolbar
-                setCreateEventDialogOpen={setCreateEventDialogOpen}
+                openCreateEventDialog={() => setCreateEventDialogOpen(true)}
             />
             {
                 !isLoadingEvents ?

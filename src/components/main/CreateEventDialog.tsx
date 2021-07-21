@@ -9,13 +9,13 @@ import {
     TextField,
     LinearProgress
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import '../styles/createNewEvent.css';
-import { buildCreateEventRequest, CreateEventRequest, getBlankEvent, NewEvent } from '../models/ApiRequests';
-import { useCreateNewEvent } from '../hooks/EventsApiHooks';
-import { Alert } from '@material-ui/lab';
-import { validateNewEvent } from '../utils/validationUtils';
+import { buildCreateEventRequest, CreateEventRequest, getBlankEvent, NewEvent } from '../../models/ApiRequests';
+import { useCreateNewEvent } from '../../hooks/EventsApiHooks';
+import { validateNewEvent } from '../../utils/validationUtils';
+import '../../styles/createNewEvent.css';
 
 type CreateEventDialogProps = {
     open: boolean;

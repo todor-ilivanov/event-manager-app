@@ -1,9 +1,9 @@
 import { Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { AppContext } from '../AppContext';
-import AuthEventManager from './AuthEventManager';
-import UnauthEventManager from './UnauthEventManager';
+import { AppContext } from '../hooks/AppContext';
+import AuthEventManager from './main/AuthEventManager';
+import UnauthEventManager from './main/UnauthEventManager';
 
 const queryClient = new QueryClient();
 

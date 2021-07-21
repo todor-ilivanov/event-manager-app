@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import CreateEventDialog from '../components/CreateEventDialog';
-import { stringToDate } from '../utils/dateUtils';
 import MockDate from 'mockdate';
 import { API } from 'aws-amplify';
+import CreateEventDialog from '../../../components/main/CreateEventDialog';
+import { stringToDate } from '../../../utils/dateUtils';
 
 const populateInputFields = (headline: string, description: string, city: string) => {
     const headlineInputField = screen.getByTestId('headline-input');

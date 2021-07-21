@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Grid, Typography } from '@material-ui/core';
-import { EventDTO, EventStatus, getEventStatus } from '../models/Event';
+import { EventDTO, EventStatus, getEventStatus } from '../../models/Event';
 import EventCard from './EventCard';
-import { useEventsGridStyles } from '../hooks/MaterialUIStylesHooks';
+import { useEventsGridStyles } from '../../hooks/MaterialUIStylesHooks';
 import SelectedEventDialog from './SelectedEventDialog';
-import '../styles/eventsDisplay.css';
+import '../../styles/eventsDisplay.css';
 
 type EventsDisplayProps = {
     events: EventDTO[];

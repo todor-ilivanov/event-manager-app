@@ -12,9 +12,9 @@ import {
 import { Alert } from '@material-ui/lab';
 import { Auth } from 'aws-amplify';
 import React, { useState } from 'react';
-import { useAppContext } from '../AppContext';
-import { SignupError } from '../models/Errors';
-import '../styles/signup.css';
+import { useAppContext } from '../../hooks/AppContext';
+import { SignupError } from '../../models/Errors';
+import '../../styles/signup.css';
 
 type InputEvent = React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>;
 

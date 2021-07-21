@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Paper, Typography } from '@material-ui/core';
-import { WeatherResponse } from '../models/WeatherResponse';
-import '../styles/weatherInfo.css';
+import { WeatherResponse } from '../../models/WeatherResponse';
+import '../../styles/weatherInfo.css';
 
 type WeatherInfoProps = {
     weather: WeatherResponse;

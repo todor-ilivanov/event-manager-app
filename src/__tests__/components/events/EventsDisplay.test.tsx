@@ -1,12 +1,12 @@
 import { render, screen, within } from '@testing-library/react';
-import EventsDisplay from '../components/EventsDisplay';
 import MockDate from 'mockdate';
-import { stringToDate } from '../utils/dateUtils';
 import userEvent from '@testing-library/user-event';
-import { mockEvents } from '../testutils/mockEvents';
-import { EventDTO } from '../models/Event';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { API } from 'aws-amplify';
+import EventsDisplay from '../../../components/events/EventsDisplay';
+import { EventDTO } from '../../../models/Event';
+import { mockEvents } from '../../../testutils/mockEvents';
+import { stringToDate } from '../../../utils/dateUtils';
 
 describe('EventsDisplay', () => {
 

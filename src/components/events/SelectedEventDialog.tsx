@@ -9,11 +9,11 @@ import {
     DialogTitle,
     Grid
 } from '@material-ui/core';
-import { EventDTO } from '../models/Event';
-import { useWeather } from '../hooks/EventsApiHooks';
-import { WeatherResponse } from '../models/WeatherResponse';
+import { EventDTO } from '../../models/Event';
+import { useWeather } from '../../hooks/EventsApiHooks';
+import { WeatherResponse } from '../../models/WeatherResponse';
 import WeatherInfo from './WeatherInfo';
-import '../styles/selectedEvent.css';
+import '../../styles/selectedEvent.css';
 import { Alert } from '@material-ui/lab';
 
 type SelectedEventDialogProps = {
