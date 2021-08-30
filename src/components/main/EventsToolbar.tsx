@@ -1,19 +1,19 @@
 import React from 'react';
 import { AppBar, Button, Grid, Toolbar, Typography } from '@material-ui/core';
-import { useAppContext } from '../AppContext';
+import { useAppContext } from '../../hooks/AppContext';
 import { Auth } from 'aws-amplify';
-import '../styles/eventsToolbar.css';
+import '../../styles/eventsToolbar.css';
 
 type EventsToolbarProps = {
-    setSignupDialogOpen?: (val: boolean) => void;
-    setLoginDialogOpen?: (val: boolean) => void;
-    setCreateEventDialogOpen?: (val: boolean) => void;
+    openSignupDialog?: () => void;
+    openLoginDialog?: () => void;
+    openCreateEventDialog?: () => void;
 };
 
 const EventsToolbar = (props: EventsToolbarProps) => {
 
     const { isAuthenticated, setIsAuthenticated } = useAppContext();
-    const { setSignupDialogOpen, setLoginDialogOpen, setCreateEventDialogOpen } = props;
+    const { openSignupDialog, openLoginDialog, openCreateEventDialog } = props;
 
     const handleLogout = async () => {
         try {
@@ -45,10 +45,7 @@ const EventsToolbar = (props: EventsToolbarProps) => {
                                     <Button
                                         color="inherit"
                                         className="new-event-button"
-                                        onClick={() => {
-                                            if(setCreateEventDialogOpen !== undefined)
-                                                setCreateEventDialogOpen(true);
-                                        }}
+                                        onClick={openCreateEventDialog}
                                     >
                                         + New Event
                                     </Button>
@@ -66,20 +63,14 @@ const EventsToolbar = (props: EventsToolbarProps) => {
                                 <Button
                                     color="inherit"
                                     className="sign-up-button"
-                                    onClick={() => {
-                                        if(setSignupDialogOpen)
-                                            setSignupDialogOpen(true);
-                                    }}
+                                    onClick={openSignupDialog}
                                 >
                                     Sign Up
                                 </Button>
                                 <Button
                                     color="inherit"
                                     className="log-in-button"
-                                    onClick={() => {
-                                        if(setLoginDialogOpen !== undefined)
-                                            setLoginDialogOpen(true);
-                                    }}
+                                    onClick={openLoginDialog}
                                 >
                                     Log In
                                 </Button>

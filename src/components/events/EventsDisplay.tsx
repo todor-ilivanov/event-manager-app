@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Grid, Typography } from '@material-ui/core';
-import { EventDTO, getEventStatus } from '../models/Event';
+import { EventDTO, EventStatus, getEventStatus } from '../../models/Event';
 import EventCard from './EventCard';
-import { useEventsGridStyles } from '../hooks/MaterialUIStylesHooks';
+import { useEventsGridStyles } from '../../hooks/MaterialUIStylesHooks';
 import SelectedEventDialog from './SelectedEventDialog';
-import '../styles/eventsDisplay.css';
+import '../../styles/eventsDisplay.css';
 
 type EventsDisplayProps = {
     events: EventDTO[];
@@ -22,15 +22,18 @@ const EventsDisplay = (props: EventsDisplayProps) => {
         setOpenDetailsDialog(false);
     };
 
-    const renderEvents = (events: EventDTO[]) => {
-        return events.map((event) => (
-            <Grid key={event.eventId} item>
-                <EventCard
-                    event={event}
-                    setSelectedEvent={setSelectedEvent}
-                    setOpenDetailsDialog={setOpenDetailsDialog}
-                />
-            </Grid>)
+    const renderEvents = (events: EventDTO[], status: EventStatus) => {
+        return events
+            .filter(event => getEventStatus(event) === status)
+            .map((event) => (
+                <Grid key={event.eventId} item>
+                    <EventCard
+                        event={event}
+                        setSelectedEvent={setSelectedEvent}
+                        setOpenDetailsDialog={setOpenDetailsDialog}
+                    />
+                </Grid>
+            )
         );
     };
 
@@ -46,7 +49,7 @@ const EventsDisplay = (props: EventsDisplayProps) => {
                         </Grid>
                         <Grid container className="events-group" justify="flex-start" spacing={2}>
                             {
-                                renderEvents(events.filter(event => getEventStatus(event) === 'Ongoing'))
+                                renderEvents(events, 'Ongoing')
                             }
                         </Grid>
                         <Grid item className="event-status">
@@ -54,7 +57,7 @@ const EventsDisplay = (props: EventsDisplayProps) => {
                         </Grid>
                         <Grid container className="events-group" justify="flex-start" spacing={2}>
                             {
-                                renderEvents(events.filter(event => getEventStatus(event) === 'Upcoming'))
+                                renderEvents(events, 'Upcoming')
                             }
                         </Grid>
                         <Grid item className="event-status">
@@ -62,7 +65,7 @@ const EventsDisplay = (props: EventsDisplayProps) => {
                         </Grid>
                         <Grid container className="events-group" justify="flex-start" spacing={2}>
                             {
-                                renderEvents(events.filter(event => getEventStatus(event) === 'Past'))
+                                renderEvents(events, 'Past')
                             }
                         </Grid>
                     </Grid>

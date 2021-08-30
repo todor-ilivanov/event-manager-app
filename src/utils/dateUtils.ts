@@ -10,3 +10,7 @@ export const stringToDate = (dateString: string): Date => {
         throw new Error('Incorrect date format.');
     }
 };
+
+export const localizedDateToString = (date: Date): string => {
+    return date.toLocaleDateString("en-GB");
+};

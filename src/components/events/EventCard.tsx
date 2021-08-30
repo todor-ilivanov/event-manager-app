@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
-import { EventDTO, getEventStatus } from '../models/Event';
-import { useEventCardStyles } from '../hooks/MaterialUIStylesHooks';
+import { EventDTO, getEventStatus } from '../../models/Event';
+import { useEventCardStyles } from '../../hooks/MaterialUIStylesHooks';
 
 type EventCardProps = {
     event: EventDTO;

@@ -6,14 +6,15 @@ import {
     DialogContentText,
     DialogTitle,
     LinearProgress,
-    TextField
+    TextField,
+    Typography
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Auth } from 'aws-amplify';
 import React, { useState } from 'react';
-import { useAppContext } from '../AppContext';
-import { SignupError } from '../models/Errors';
-import '../styles/signup.css';
+import { useAppContext } from '../../hooks/AppContext';
+import { SignupError } from '../../models/Errors';
+import '../../styles/signup.css';
 
 type InputEvent = React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>;
 
@@ -40,11 +41,7 @@ const SignupForm = (props: SignupFormProps) => {
         setSignupLoading(true);
         setSignupError({} as SignupError);
         if(password !== confirmPassword) {
-            setSignupError({
-                message: 'Passwords must match.',
-                shouldRender: true,
-            } as SignupError);
-            setSignupLoading(false);
+            finishSignupWithError(new Error('Passwords must match.'));
             return;
         }
         try {
@@ -53,15 +50,15 @@ const SignupForm = (props: SignupFormProps) => {
                 password: password,
             });
             setSignupLoading(false);
-            //@ts-ignore - wasn't able to import ISignUpResult
+            // @ts-ignore looks like there is an unresolved issue with Cognito types
+            // https://github.com/aws-amplify/amplify-js/issues/4927
             setNewUser(newUser);
         } catch(error) {
-            setSignupError({
-                message: error.message,
-                shouldRender: true,
-            } as SignupError);
-            setSignupLoading(false);
-            console.error(error);
+            if(error.code === 'UsernameExistsException') {
+                attemptToResendSignUp();
+            } else {
+                finishSignupWithError(error);
+            }
         }
     };
 
@@ -72,14 +69,28 @@ const SignupForm = (props: SignupFormProps) => {
             await Auth.signIn(email, password);
             setIsAuthenticated(true);
         } catch(error) {
-            console.error(error);
-            setSignupError({
-                message: error.message,
-                shouldRender: true,
-            } as SignupError);
-            setSignupLoading(false);
+            finishSignupWithError(error);
             setNewUser(undefined);
         }
+    };
+
+    const attemptToResendSignUp = async () => {
+        try {
+            const newUser = await Auth.resendSignUp(email);
+            setSignupLoading(false);
+            setNewUser(newUser);
+        } catch(resendError) {
+            finishSignupWithError(resendError);
+        }
+    }
+
+    const finishSignupWithError = (error: Error) => {
+        setSignupError({
+            message: error.message,
+            shouldRender: true,
+        } as SignupError);
+        setSignupLoading(false);
+        console.error(error);
     };
 
     const renderSignUpForm = () => {
@@ -159,6 +170,9 @@ const SignupForm = (props: SignupFormProps) => {
         return (
             <>
                 <DialogContent>
+                    <Typography variant="subtitle1">
+                        Please check your email for the verification code.
+                    </Typography>
                     <div className="signup-input-field">
                         <TextField
                             fullWidth

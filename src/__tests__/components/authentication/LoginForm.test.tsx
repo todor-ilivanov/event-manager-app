@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Auth } from 'aws-amplify';
-import LoginForm from '../components/LoginForm';
-import { AppContext } from '../AppContext';
+import LoginForm from '../../../components/authentication/LoginForm';
+import { AppContext } from '../../../hooks/AppContext';
 
 describe('LoginForm', () => {
 

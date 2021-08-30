@@ -1,4 +1,4 @@
-import { stringToDate } from '../utils/dateUtils';
+import { stringToDate } from '../../utils/dateUtils';
 
 describe('dateUtils', () => {
 

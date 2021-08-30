@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AuthEventManager from '../components/AuthEventManager';
 import { Auth, API } from 'aws-amplify';
-import { AppContext } from '../AppContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { mockEvents } from '../testutils/mockEvents';
+import { AppContext } from '../../../hooks/AppContext';
+import AuthEventManager from '../../../components/main/AuthEventManager';
+import { mockEvents } from '../../../testutils/mockEvents';
 
 describe('AuthEventManager', () => {
 

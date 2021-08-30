@@ -21,7 +21,7 @@ Amplify.configure({
     API: {
         endpoints: [
             {
-                name: "events",
+                name: 'events',
                 endpoint: awsConfig.apiGateway.URL,
                 region: awsConfig.apiGateway.REGION
             },

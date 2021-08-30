@@ -9,30 +9,26 @@ import {
     TextField,
     LinearProgress
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import '../styles/createNewEvent.css';
-import { buildCreateEventRequest, CreateEventRequest } from '../models/ApiRequests';
-import { useCreateNewEvent } from '../hooks/EventsApiHooks';
-import { Alert } from '@material-ui/lab';
-import { getBlankEvent, EventDTO } from '../models/Event';
-import { stringToDate } from '../utils/dateUtils';
-import { DatesInput } from '../models/DateModels';
+import { buildCreateEventRequest, CreateEventRequest, getBlankEvent, NewEvent } from '../../models/ApiRequests';
+import { useCreateNewEvent } from '../../hooks/EventsApiHooks';
+import { validateNewEvent } from '../../utils/validationUtils';
+import '../../styles/createNewEvent.css';
 
 type CreateEventDialogProps = {
     open: boolean;
     handleDialogClose: () => void;
-    setShouldFetchEvents: (val: boolean) => void;
 };
 
 const CreateEventDialog = (props: CreateEventDialogProps) => {
 
-    const { open, handleDialogClose, setShouldFetchEvents } = props;
+    const { open, handleDialogClose } = props;
 
-    const [newEvent, setNewEvent] = useState<EventDTO>(getBlankEvent());
+    const [newEvent, setNewEvent] = useState<NewEvent>(getBlankEvent());
     const [createEventRequest, setCreateEventRequest] = useState<CreateEventRequest>();
     const [inputValidationErrors, setInputValidationErrors] = useState<string[]>([]);
-    const [datesInput, setDatesInput] = useState<DatesInput>({ startDate: new Date(), endDate: new Date() });
 
     const {
         data: createEventResponse,
@@ -43,15 +39,12 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     useEffect(() => {
         if(createEventResponse) {
             setCreateEventRequest(undefined);
-            setShouldFetchEvents(true);
             setNewEvent(getBlankEvent);
             handleDialogClose();
         }
-    }, [createEventResponse, setShouldFetchEvents, handleDialogClose]);
+    }, [createEventResponse, handleDialogClose]);
 
-    const createNewEvent = (newEvent: EventDTO, datesInput: DatesInput) => {
-        newEvent.startDate = datesInput.startDate.toLocaleDateString("gb-EN");
-        newEvent.endDate = datesInput.endDate.toLocaleDateString("gb-EN");
+    const createNewEvent = (newEvent: NewEvent) => {
         const validationErrors = validateInput(newEvent);
         if(validationErrors.length === 0) {
             const creationRequest = buildCreateEventRequest(newEvent);
@@ -59,26 +52,10 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
         }
     };
 
-    const validateInput = (newEvent: EventDTO): string[] => {
-        const fieldsToValidate = ['headline', 'description', 'city'];
-        const errors: string[] = fieldsToValidate
-            .filter(field => newEvent[field] !== undefined && newEvent[field]!!.length === 0)
-            .map(field => `The ${field} cannot be empty.`);
-
-        const start: Date = stringToDate(newEvent.startDate);
-        const end: Date = stringToDate(newEvent.endDate);
-
-        if(start > end) {
-            errors.push('The end date must be later than the start date.');
-        }
+    const validateInput = (newEvent: NewEvent): string[] => {
+        const errors = validateNewEvent(newEvent);
         setInputValidationErrors(errors);
         return errors;
-    };
-
-    const handleDateChange = (date: Date | null, key: string) => {
-        if(date !== null) {
-            setDatesInput({...datesInput, [key]: date})
-        }
     };
 
     return (
@@ -91,7 +68,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 onKeyPress={
                     (e) => {
                         if(e.key === 'Enter')
-                            createNewEvent(newEvent, datesInput);
+                            createNewEvent(newEvent);
                     }
                 }
                 aria-labelledby="form-dialog-title"
@@ -137,9 +114,9 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                                 margin="normal"
                                 id="start-date-picker"
                                 label="Start Date"
-                                value={datesInput.startDate}
+                                value={newEvent.startDate}
                                 inputProps={{ 'data-testid': 'start-date-picker' }}
-                                onChange={(e) => handleDateChange(e, 'startDate')}
+                                onChange={(e) => setNewEvent({ ...newEvent, startDate: e as Date})}
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
@@ -151,9 +128,9 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                                 margin="normal"
                                 id="end-date-picker"
                                 label="End Date"
-                                value={datesInput.endDate}
+                                value={newEvent.endDate}
                                 inputProps={{ 'data-testid': 'end-date-picker' }}
-                                onChange={(e) => handleDateChange(e, 'endDate')}
+                                onChange={(e) => setNewEvent({ ...newEvent, endDate: e as Date})}
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
@@ -184,7 +161,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                     <Button
                         color="primary"
                         variant="contained"
-                        onClick={() => createNewEvent(newEvent, datesInput)}
+                        onClick={() => createNewEvent(newEvent)}
                         data-testid="create-new-event-submit"
                     >
                         Create

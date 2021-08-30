@@ -13,18 +13,9 @@ export type EventDTO = {
     [key: string]: string | undefined
 };
 
-export const getBlankEvent = (): EventDTO => {
-    return {
-        headline: '',
-        description: '',
-        startDate: new Date().toLocaleDateString('gb-EN'),
-        endDate: new Date().toLocaleDateString('gb-EN'),
-        imageUrl: '',
-        city: ''
-    } as EventDTO;
-}
+export type EventStatus = 'Upcoming' | 'Past' | 'Ongoing';
 
-export const getEventStatus = (event: EventDTO): string | undefined => {
+export const getEventStatus = (event: EventDTO): EventStatus | undefined => {
     const currentDate = new Date();
     try {
         const startDate = stringToDate(event.startDate);

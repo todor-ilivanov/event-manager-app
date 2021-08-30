@@ -15,3 +15,10 @@ export const useCreateNewEvent = (eventRequest: CreateEventRequest | undefined) 
         { enabled: eventRequest !== undefined }
     );
 };
+
+export const useWeather = (city: string | undefined) => {
+    return useQuery([city, 'getWeather'],
+        () => API.get('events', '/weather', { queryStringParameters: { city: city } }),
+        { enabled: city !== undefined }
+    );
+};
