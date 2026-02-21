@@ -1,20 +1,45 @@
-# Event Manager App
+# Event Manager
 
-Barebones event management app using a backend serverless API. Users are able to sign in, create and view events, where the events are grouped by Ongoing, Upcoming and Past.
+Barebones event management app using a serverless API. Users can sign in, create and view events grouped by Ongoing, Upcoming and Past.
+
+## Structure
+
+This is a yarn workspaces monorepo:
+
+```
+packages/
+  app/   — React/TypeScript UI (CRA + Material UI + AWS Amplify)
+  api/   — Serverless API (AWS Lambda + DynamoDB)
+```
 
 ## Workflow
-Authentication is done via AWS Cognito, and API requests are routed to Lambdas using API Gateway. Storage of events is done using DynamoDB.
+
+Authentication is done via AWS Cognito, and API requests are routed to Lambdas using API Gateway. Events are stored in DynamoDB.
 
 ## Local Development
-* `yarn install` - install dependencies 
-* `yarn start` - run the app
-* `yarn test` - run unit tests
+
+```bash
+yarn install        # install all workspace dependencies
+yarn start          # run the UI (packages/app)
+yarn build          # build the UI
+yarn test           # run tests in all packages
+yarn deploy         # deploy the API (packages/api)
+```
+
+Or target a specific package:
+
+```bash
+yarn workspace app start
+yarn workspace event-manager-api test
+```
 
 ## Weather
-Weather images taken from [openweathermap](https://openweathermap.org/weather-conditions#Icon-list) - the public API that the backend uses for weather information.
 
-## Future development
-* Styling improvements 
+Weather images from [openweathermap](https://openweathermap.org/weather-conditions#Icon-list) — the public API used by the backend for weather information.
+
+## Future Development
+
+* Styling improvements
 * E2E tests
 * Display more information about events
-* Integrate with an S3 bucket to allow users to upload images for their events
+* Integrate with S3 to allow users to upload images for their events
