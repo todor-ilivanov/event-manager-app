@@ -1,0 +1,13 @@
+{
+  "name": "event-manager",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "yarn workspace app start",
+    "build": "yarn workspace app build",
+    "test": "yarn workspaces run test",
+    "deploy": "yarn workspace api deploy"
+  }
+}
